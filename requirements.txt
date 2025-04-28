@@ -1,4 +1,3 @@
-pandasstreamlit
-pandas
-numpy
-time
+streamlit>=1.30
+pandas>=1.5
+numpy>=1.23
