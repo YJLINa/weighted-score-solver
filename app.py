@@ -85,4 +85,4 @@ else:
             st.warning("😢 在設定的嘗試次數內找不到符合條件的整數解，建議調整比重或最終分數。")
 
 st.markdown("---")
-st.caption("By Ada 的加權反推小工具 ⚡️你值得擁有")
+st.caption("By Ada 的加權反推小工具 ⚡️你值得擁有 v2.0")
