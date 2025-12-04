@@ -31,19 +31,46 @@ else:
     max_trials = 50000  # 背後自動設定
 
     def random_integer_solution():
+        # === 第一階段：優先找所有分數都在 70~91 的解 ===
         for _ in range(max_trials):
-            # 隨機選 n-1 個分數 (整數)
-            random_scores = np.random.randint(1, 101, size=num_projects - 1)
-            # 反推最後一個
+            random_scores = np.random.randint(70, 92, size=num_projects - 1)
+
             remaining_weight = normalized_weights[-1]
             weighted_sum_so_far = sum([s * w for s, w in zip(random_scores, normalized_weights[:-1])])
             last_score = (target_score - weighted_sum_so_far) / remaining_weight
 
-            # ⭐ 檢查：最後一個是整數 AND 1~100 範圍
+            # 最後一項也需在 70~91
+            if last_score.is_integer() and 70 <= last_score <= 91:
+                return list(random_scores) + [int(last_score)]
+
+        # === 第二階段：若找不到，以原本 1~100 的範圍找解 ===
+        for _ in range(max_trials):
+            random_scores = np.random.randint(1, 101, size=num_projects - 1)
+
+            remaining_weight = normalized_weights[-1]
+            weighted_sum_so_far = sum([s * w for s, w in zip(random_scores, normalized_weights[:-1])])
+            last_score = (target_score - weighted_sum_so_far) / remaining_weight
+
             if last_score.is_integer() and 1 <= last_score <= 100:
-                full_scores = list(random_scores) + [int(last_score)]
-                return full_scores
-        return None  # 沒找到解
+                return list(random_scores) + [int(last_score)]
+
+        return None # 沒找到解
+
+
+    # def random_integer_solution():
+    #     for _ in range(max_trials):
+    #         # 隨機選 n-1 個分數 (整數)
+    #         random_scores = np.random.randint(1, 101, size=num_projects - 1)
+    #         # 反推最後一個
+    #         remaining_weight = normalized_weights[-1]
+    #         weighted_sum_so_far = sum([s * w for s, w in zip(random_scores, normalized_weights[:-1])])
+    #         last_score = (target_score - weighted_sum_so_far) / remaining_weight
+
+    #         # ⭐ 檢查：最後一個是整數 AND 1~100 範圍
+    #         if last_score.is_integer() and 1 <= last_score <= 100:
+    #             full_scores = list(random_scores) + [int(last_score)]
+    #             return full_scores
+    #     return None  # 沒找到解
 
     if st.button("🚀 開始計算"):
         start_time = time.time()
